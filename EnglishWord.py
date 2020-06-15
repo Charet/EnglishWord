@@ -1,72 +1,50 @@
 import random
-
 import os
+import platform
 
+platform = platform.system()
 ture_word = []
-
 false_word = []
-
 word = []
 
-def random_english(length,word):
+
+def random_english(length, word):
 
     while length != 0:
-
-        number = random.randint(1,length)
-
-        # print(number)
+        number = random.randint(1, length)
 
         number = number*2-1
-
         print(word[number])
 
         input_word = input()
 
-        # print(word)
-
-        os.system('cls')
+        if platform == "Windows":
+            os.system('cls')
+        elif platform == "Linux":
+            os.system('clear')
 
         if input_word == word[number-1]:
-
             ture_word.append(input_word + ' ' + word[number])
-
-            # print(number-1,number+1)
-
             del word[number-1:number+1]
-
-            # print(word)
-
         else:
-
             false_word.append(input_word + ' ' + word[number])
-
-            # print(number-1,number+1)
-
             del word[number-1:number+1]
 
-            # print(word)
+        length -= 1
 
-        # print(false_word)
 
-        length-=1
+with open("./tmp/english.txt", "r", encoding='utf-8') as f:
+    for line in f:
+        lines_english = ' '.join(line.split(' ',)[0:-1])
+        lines_chinese = ''.join(line.split(' ',)[-1])
 
-for line in open("./tmp/english.txt","r",encoding = 'utf-8'):
+        word.append(lines_english)
+        word.append(lines_chinese.replace("\n", ""))
 
-    # print(line)
 
-    lines_english = ' '.join(line.split(' ',)[0:-1])
+length = len(word)/2  # 计算单词总数
 
-    lines_chinese = ''.join(line.split(' ',)[-1])
-
-    word.append(lines_english)
-
-    word.append(lines_chinese.replace("\n",""))
-
-# print(word)
-
-length = len(word)/2 #计算单词总数
-
-random_english(length,word)
+random_english(length, word)
 
 print('======错误的单词======')
 
@@ -79,5 +57,3 @@ print('======正确的单词=======')
 for i in ture_word:
 
     print(i)
-
-input()
